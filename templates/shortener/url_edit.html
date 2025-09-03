@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit {{ url.short_code }} - Saaransh Link{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-8">
+        <nav class="flex" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-4">
+                <li>
+                    <a href="{% url 'dashboard' %}" class="text-gray-400 hover:text-gray-500">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span class="sr-only">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <i class="fas fa-chevron-right text-gray-400 mr-4"></i>
+                        <a href="{% url 'url_detail' url.pk %}" class="text-gray-400 hover:text-gray-500">{{ url.short_code }}</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <i class="fas fa-chevron-right text-gray-400 mr-4"></i>
+                        <span class="text-sm font-medium text-gray-500">Edit</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+        <h2 class="mt-2 text-2xl font-bold leading-7 text-gray-900 sm:text-3xl">
+            Edit URL
+        </h2>
+        <p class="mt-1 text-sm text-gray-500">
+            Update the settings for {{ url.short_code }}
+        </p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <div>
+                    <label for="{{ form.original_url.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        Original URL
+                    </label>
+                    {{ form.original_url }}
+                    {% if form.original_url.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.original_url.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">
+                        Short Code
+                    </label>
+                    <div class="mt-1 flex items-center space-x-2">
+                        <input type="text" value="{{ url.short_code }}" readonly class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed">
+                        <button type="button" onclick="copyToClipboard('{{ url.short_url }}')" class="px-4 py-3 border border-gray-300 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-50">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="mt-1 text-sm text-gray-500">Short codes cannot be changed after creation</p>
+                </div>
+
+                <div>
+                    <label for="{{ form.expires_at.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        Expires At (Optional)
+                    </label>
+                    {{ form.expires_at }}
+                    {% if form.expires_at.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.expires_at.errors.0 }}</p>
+                    {% endif %}
+                    <p class="mt-1 text-sm text-gray-500">Leave empty for no expiration</p>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-lg font-medium text-gray-900">Settings</h3>
+                    
+                    <div class="flex items-center">
+                        {{ form.is_public }}
+                        <label for="{{ form.is_public.id_for_label }}" class="ml-2 block text-sm text-gray-900">
+                            Make this link publicly visible
+                        </label>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        {{ form.is_active }}
+                        <label for="{{ form.is_active.id_for_label }}" class="ml-2 block text-sm text-gray-900">
+                            Keep this link active
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+                    <a href="{% url 'url_detail' url.pk %}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Cancel
+                    </a>
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+                        <i class="fas fa-save mr-2"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

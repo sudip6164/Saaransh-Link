@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% load analytics_tags %}
+
+{% block title %}Analytics Dashboard - Saaransh Link{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="md:flex md:items-center md:justify-between mb-8">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                Analytics Dashboard
+            </h2>
+            <p class="mt-1 text-sm text-gray-500">
+                Comprehensive analytics for all your shortened URLs
+            </p>
+        </div>
+        <div class="mt-4 flex md:mt-0 md:ml-4">
+            <a href="{% url 'export_user_analytics' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+                <i class="fas fa-download mr-2"></i>
+                Export Data
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-link text-2xl text-teal-500"></i>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Total URLs</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ total_urls }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-mouse-pointer text-2xl text-green-500"></i>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Total Clicks</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ total_clicks }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-calendar-day text-2xl text-purple-500"></i>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Clicks Today</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ clicks_today }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-calendar-week text-2xl text-orange-500"></i>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">This Week</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ clicks_this_week }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="bg-white shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+                    Top Performing URLs
+                </h3>
+                {% if top_urls %}
+                <div class="space-y-4">
+                    {% for url in top_urls %}
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 truncate">
+                                {{ url.original_url|truncatechars:50 }}
+                            </p>
+                            <p class="text-sm text-teal-600 font-mono">{{ url.short_code }}</p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="text-right">
+                                <p class="text-sm font-medium text-gray-900">{{ url.click_count }} clicks</p>
+                                <p class="text-sm text-gray-500">{{ url.unique_clicks }} unique</p>
+                            </div>
+                            <a href="{% url 'url_detail' url.pk %}" class="text-teal-600 hover:text-teal-500">
+                                <i class="fas fa-chart-bar"></i>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-8">
+                    <i class="fas fa-chart-line text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-gray-500">No URLs with clicks yet</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+                    Recent Activity
+                </h3>
+                {% if recent_clicks %}
+                <div class="space-y-3">
+                    {% for click in recent_clicks %}
+                    <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-mouse-pointer text-teal-500"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900">
+                                {{ click.url.short_code }}
+                            </p>
+                            <p class="text-sm text-gray-500">
+                                {{ click.country|default:"Unknown" }} • {{ click.browser|default:"Unknown" }}
+                            </p>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            {{ click.clicked_at|timesince }} ago
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-8">
+                    <i class="fas fa-clock text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-gray-500">No recent activity</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

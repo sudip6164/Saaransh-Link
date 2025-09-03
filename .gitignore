@@ -1,0 +1,62 @@
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+*.db
+*.sqlite3
+*.sqlite3-journal
+
+# Local settings
+local_settings.py
+.env
+*.env
+
+# Media and static files (optional depending on setup)
+media/
+staticfiles/
+
+# Django migrations
+*/migrations/__pycache__/
+*/migrations/*.pyc
+*/migrations/*.pyo
+*/migrations/*.py~
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+
+# VSCode and other editor settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# MyPy and other type checker caches
+.mypy_cache/
+.dmypy.json
+.pyre/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+
+# Pytest
+.pytest_cache/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/

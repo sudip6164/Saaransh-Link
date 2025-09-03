@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Verify Your Email - Saaransh Link</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <div style="background: #f8f9fa; padding: 30px; border-radius: 10px;">
+        <h1 style="color: #2563eb; text-align: center; margin-bottom: 30px;">
+                            <span style="font-size: 24px;">🔗</span> Saaransh Link
+        </h1>
+        
+        <h2 style="color: #1f2937;">Verify Your Email Address</h2>
+        
+        <p>Hello {{ user.username }},</p>
+        
+                    <p>Thank you for signing up for Saaransh Link! To complete your registration and start creating shortened URLs, please verify your email address by clicking the button below:</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{{ verification_url }}" style="background: #2563eb; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">
+                Verify Email Address
+            </a>
+        </div>
+        
+        <p>If the button doesn't work, you can copy and paste this link into your browser:</p>
+        <p style="word-break: break-all; background: #f3f4f6; padding: 10px; border-radius: 5px; font-family: monospace;">
+            {{ verification_url }}
+        </p>
+        
+        <p>This verification link will expire in 24 hours for security reasons.</p>
+        
+                    <p>If you didn't create an account with Saaransh Link, you can safely ignore this email.</p>
+        
+        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
+        
+        <p style="font-size: 14px; color: #6b7280; text-align: center;">
+            Best regards,<br>
+            The Saaransh Link Team
+        </p>
+    </div>
+</body>
+</html>

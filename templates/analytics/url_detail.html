@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+
+{% block title %}Analytics for {{ url.short_code }} - Saaransh Link{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="md:flex md:items-center md:justify-between mb-8">
+        <div class="flex-1 min-w-0">
+            <nav class="flex" aria-label="Breadcrumb">
+                <ol class="flex items-center space-x-4">
+                    <li>
+                        <a href="{% url 'analytics_dashboard' %}" class="text-gray-400 hover:text-gray-500">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="sr-only">Analytics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 mr-4"></i>
+                            <span class="text-sm font-medium text-gray-500">{{ url.short_code }}</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+            <h2 class="mt-2 text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                Analytics for {{ url.short_code }}
+            </h2>
+            <p class="mt-1 text-sm text-gray-500 truncate">
+                {{ url.original_url }}
+            </p>
+        </div>
+        <div class="mt-4 flex space-x-3 md:mt-0 md:ml-4">
+            <a href="{% url 'export_analytics' url.pk %}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                <i class="fas fa-download mr-2"></i>
+                Export
+            </a>
+                            <a href="{% url 'url_edit' url.pk %}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700">
+                <i class="fas fa-edit mr-2"></i>
+                Edit URL
+            </a>
+        </div>
+    </div>
+
+    <div class="bg-white shadow rounded-lg mb-8">
+        <div class="px-4 py-5 sm:p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                                        <div class="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-link text-teal-600"></i>
+                </div>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-500">Short URL</p>
+                        <div class="flex items-center space-x-2">
+                            <p class="text-sm text-teal-600 font-mono">{{ url.short_url }}</p>
+                            <button onclick="copyToClipboard('{{ url.short_url }}')" class="text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-calendar text-green-600"></i>
+                        </div>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-500">Created</p>
+                        <p class="text-sm text-gray-900">{{ url.created_at|date:"M d, Y" }}</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 {% if url.is_active %}bg-green-100{% else %}bg-red-100{% endif %} rounded-full flex items-center justify-center">
+                            <i class="fas {% if url.is_active %}fa-check text-green-600{% else %}fa-times text-red-600{% endif %}"></i>
+                        </div>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-500">Status</p>
+                        <p class="text-sm {% if url.is_active %}text-green-600{% else %}text-red-600{% endif %}">
+                            {% if url.is_active %}Active{% else %}Inactive{% endif %}
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-qrcode text-purple-600"></i>
+                        </div>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-500">QR Code</p>
+                        <a href="{% url 'url_qr' url.pk %}" target="_blank" class="text-sm text-purple-600 hover:text-purple-500">
+                            Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-mouse-pointer text-2xl text-teal-500"></i>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Total Clicks</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ total_clicks }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-users text-2xl text-green-500"></i>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Unique Visitors</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ unique_visitors }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-calendar-day text-2xl text-purple-500"></i>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Today</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ click_stats.today_clicks }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-calendar-week text-2xl text-orange-500"></i>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">This Week</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ click_stats.this_week_clicks }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div class="bg-white shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+                    Daily Clicks (Last {{ days }} days)
+                </h3>
+                <div class="h-64">
+                    <canvas id="dailyClicksChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+                    Hourly Distribution
+                </h3>
+                <div class="h-64">
+                    <canvas id="hourlyChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="bg-white shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+                    Top Countries
+                </h3>
+                {% if country_stats %}
+                <div class="space-y-3">
+                    {% for stat in country_stats %}
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-900">{{ stat.country|default:"Unknown" }}</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-20 bg-gray-200 rounded-full h-2">
+                                <div class="bg-teal-600 h-2 rounded-full" style="width: {% widthratio stat.count total_clicks 100 %}%"></div>
+                            </div>
+                            <span class="text-sm text-gray-500">{{ stat.count }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-gray-500 text-center py-4">No geographic data available</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+                    Top Browsers
+                </h3>
+                {% if browser_stats %}
+                <div class="space-y-3">
+                    {% for stat in browser_stats %}
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-900">{{ stat.browser|default:"Unknown" }}</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-20 bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-600 h-2 rounded-full" style="width: {% widthratio stat.count total_clicks 100 %}%"></div>
+                            </div>
+                            <span class="text-sm text-gray-500">{{ stat.count }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-gray-500 text-center py-4">No browser data available</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Daily Clicks Chart
+const dailyData = {{ daily_clicks|safe }};
+const ctx1 = document.getElementById('dailyClicksChart').getContext('2d');
+new Chart(ctx1, {
+    type: 'line',
+    data: {
+        labels: dailyData.map(d => d.date),
+        datasets: [{
+            label: 'Clicks',
+            data: dailyData.map(d => d.clicks),
+            borderColor: 'rgb(59, 130, 246)',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            tension: 0.1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Hourly Distribution Chart
+const hourlyData = {{ hourly_distribution|safe }};
+const ctx2 = document.getElementById('hourlyChart').getContext('2d');
+new Chart(ctx2, {
+    type: 'bar',
+    data: {
+        labels: hourlyData.map(d => d.hour + ':00'),
+        datasets: [{
+            label: 'Clicks',
+            data: hourlyData.map(d => d.clicks),
+            backgroundColor: 'rgba(34, 197, 94, 0.8)',
+            borderColor: 'rgb(34, 197, 94)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+{% endblock %}
