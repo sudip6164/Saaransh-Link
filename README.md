@@ -26,7 +26,7 @@ A comprehensive URL shortening service built with Django, featuring user authent
 1. **Clone the repository**
    ```bash
    git clone https://github.com/sudip6164/Saaransh-Link.git
-   cd django-url-shortener
+   cd Saaransh-Link
    ```
 
 2. **Create virtual environment**
