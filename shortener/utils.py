@@ -60,17 +60,19 @@ def get_client_info(request):
     }
 
 def get_location_info(ip_address):
-    """Get location information from IP address"""
-    # This is a basic implementation
-    # In production, you would use a service like MaxMind GeoIP2
+    """Get location information from IP address using free ip-api.com service"""
+    import requests
     try:
-        # Basic country detection based on IP
-        # This is a placeholder - implement with actual GeoIP service
-        if ip_address.startswith('127.') or ip_address.startswith('192.168.'):
-            return {'country': 'Local', 'city': 'Local'}
-        
-        # You would integrate with MaxMind GeoIP2 or similar service here
-        return {'country': 'Unknown', 'city': 'Unknown'}
+        url = f'http://ip-api.com/json/{ip_address}?fields=status,country,city'
+        response = requests.get(url, timeout=2)
+        data = response.json()
+        if data.get('status') == 'success':
+            return {
+                'country': data.get('country', 'Unknown'),
+                'city': data.get('city', 'Unknown')
+            }
+        else:
+            return {'country': 'Unknown', 'city': 'Unknown'}
     except Exception:
         return {'country': 'Unknown', 'city': 'Unknown'}
 
