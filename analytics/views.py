@@ -206,15 +206,26 @@ def admin_analytics(request):
     top_users = User.objects.annotate(
         url_count=Count('urls')
     ).order_by('-url_count')[:10]
-    
+
     # Top URLs by clicks
     top_urls = ShortenedURL.objects.order_by('-click_count')[:10]
-    
+
     # Geographic distribution
     top_countries = Click.objects.values('country').annotate(
         count=Count('country')
     ).order_by('-count')[:10]
-    
+
+    # System activity for last 7 days (for chart)
+    days = 7
+    system_activity_labels = []
+    system_activity_urls = []
+    system_activity_clicks = []
+    for i in range(days-1, -1, -1):
+        day = today - timedelta(days=i)
+        system_activity_labels.append(day.strftime('%b %d'))
+        system_activity_urls.append(ShortenedURL.objects.filter(created_at__date=day).count())
+        system_activity_clicks.append(Click.objects.filter(clicked_at__date=day).count())
+
     context = {
         'total_users': total_users,
         'total_urls': total_urls,
@@ -232,8 +243,11 @@ def admin_analytics(request):
         'top_users': top_users,
         'top_urls': top_urls,
         'top_countries': top_countries,
+        'system_activity_labels': system_activity_labels,
+        'system_activity_urls': system_activity_urls,
+        'system_activity_clicks': system_activity_clicks,
     }
-    
+
     return render(request, 'analytics/admin_dashboard.html', context)
 
 @login_required
