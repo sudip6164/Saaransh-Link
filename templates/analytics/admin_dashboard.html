@@ -1,0 +1,199 @@
+
+{% extends "base.html" %}
+{% block title %}Admin Analytics Dashboard - Saaransh Link{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex items-center justify-between mb-8">
+        <h2 class="text-3xl font-bold text-teal-700 flex items-center">
+            <i class="fas fa-chart-pie mr-3"></i> Admin Analytics Dashboard
+        </h2>
+        <a href="{% url 'export_system_analytics' %}" class="inline-flex items-center px-4 py-2 border border-teal-500 rounded-md shadow-sm text-sm font-medium text-teal-700 bg-white hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+            <i class="fas fa-download mr-2"></i> Export Data
+        </a>
+    </div>
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+        <div class="bg-white overflow-hidden shadow rounded-lg p-5 flex items-center">
+            <i class="fas fa-users text-3xl text-teal-500 mr-4"></i>
+            <div>
+                <dt class="text-sm font-medium text-gray-500 truncate">Total Users</dt>
+                <dd class="text-lg font-bold text-gray-900">{{ total_users }}</dd>
+            </div>
+        </div>
+        <div class="bg-white overflow-hidden shadow rounded-lg p-5 flex items-center">
+            <i class="fas fa-link text-3xl text-blue-500 mr-4"></i>
+            <div>
+                <dt class="text-sm font-medium text-gray-500 truncate">Total URLs</dt>
+                <dd class="text-lg font-bold text-gray-900">{{ total_urls }}</dd>
+            </div>
+        </div>
+        <div class="bg-white overflow-hidden shadow rounded-lg p-5 flex items-center">
+            <i class="fas fa-mouse-pointer text-3xl text-green-500 mr-4"></i>
+            <div>
+                <dt class="text-sm font-medium text-gray-500 truncate">Total Clicks</dt>
+                <dd class="text-lg font-bold text-gray-900">{{ total_clicks }}</dd>
+            </div>
+        </div>
+        <div class="bg-white overflow-hidden shadow rounded-lg p-5 flex items-center">
+            <i class="fas fa-check-circle text-3xl text-purple-500 mr-4"></i>
+            <div>
+                <dt class="text-sm font-medium text-gray-500 truncate">Active URLs</dt>
+                <dd class="text-lg font-bold text-gray-900">{{ active_urls }}</dd>
+            </div>
+        </div>
+    </div>
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+        <div class="bg-white overflow-hidden shadow rounded-lg p-5 flex items-center">
+            <i class="fas fa-user-plus text-2xl text-teal-400 mr-4"></i>
+            <div>
+                <dt class="text-sm font-medium text-gray-500 truncate">New Users Today</dt>
+                <dd class="text-lg font-bold text-gray-900">{{ new_users_today }}</dd>
+            </div>
+        </div>
+        <div class="bg-white overflow-hidden shadow rounded-lg p-5 flex items-center">
+            <i class="fas fa-calendar-week text-2xl text-teal-400 mr-4"></i>
+            <div>
+                <dt class="text-sm font-medium text-gray-500 truncate">New Users This Week</dt>
+                <dd class="text-lg font-bold text-gray-900">{{ new_users_week }}</dd>
+            </div>
+        </div>
+        <div class="bg-white overflow-hidden shadow rounded-lg p-5 flex items-center">
+            <i class="fas fa-calendar-alt text-2xl text-teal-400 mr-4"></i>
+            <div>
+                <dt class="text-sm font-medium text-gray-500 truncate">New Users This Month</dt>
+                <dd class="text-lg font-bold text-gray-900">{{ new_users_month }}</dd>
+            </div>
+        </div>
+        <div class="bg-white overflow-hidden shadow rounded-lg p-5 flex items-center">
+            <i class="fas fa-plus text-2xl text-blue-400 mr-4"></i>
+            <div>
+                <dt class="text-sm font-medium text-gray-500 truncate">New URLs Today</dt>
+                <dd class="text-lg font-bold text-gray-900">{{ new_urls_today }}</dd>
+            </div>
+        </div>
+        <div class="bg-white overflow-hidden shadow rounded-lg p-5 flex items-center">
+            <i class="fas fa-calendar-week text-2xl text-blue-400 mr-4"></i>
+            <div>
+                <dt class="text-sm font-medium text-gray-500 truncate">New URLs This Week</dt>
+                <dd class="text-lg font-bold text-gray-900">{{ new_urls_week }}</dd>
+            </div>
+        </div>
+        <div class="bg-white overflow-hidden shadow rounded-lg p-5 flex items-center">
+            <i class="fas fa-calendar-alt text-2xl text-blue-400 mr-4"></i>
+            <div>
+                <dt class="text-sm font-medium text-gray-500 truncate">New URLs This Month</dt>
+                <dd class="text-lg font-bold text-gray-900">{{ new_urls_month }}</dd>
+            </div>
+        </div>
+        <div class="bg-white overflow-hidden shadow rounded-lg p-5 flex items-center">
+            <i class="fas fa-bolt text-2xl text-orange-400 mr-4"></i>
+            <div>
+                <dt class="text-sm font-medium text-gray-500 truncate">Clicks Today</dt>
+                <dd class="text-lg font-bold text-gray-900">{{ clicks_today }}</dd>
+            </div>
+        </div>
+        <div class="bg-white overflow-hidden shadow rounded-lg p-5 flex items-center">
+            <i class="fas fa-calendar-week text-2xl text-orange-400 mr-4"></i>
+            <div>
+                <dt class="text-sm font-medium text-gray-500 truncate">Clicks This Week</dt>
+                <dd class="text-lg font-bold text-gray-900">{{ clicks_week }}</dd>
+            </div>
+        </div>
+        <div class="bg-white overflow-hidden shadow rounded-lg p-5 flex items-center">
+            <i class="fas fa-calendar-alt text-2xl text-orange-400 mr-4"></i>
+            <div>
+                <dt class="text-sm font-medium text-gray-500 truncate">Clicks This Month</dt>
+                <dd class="text-lg font-bold text-gray-900">{{ clicks_month }}</dd>
+            </div>
+        </div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4 flex items-center">
+                <i class="fas fa-users mr-2 text-teal-500"></i> Top Users by URL Count
+            </h3>
+            {% if top_users %}
+            <ul>
+                {% for user in top_users %}
+                <li class="mb-2 flex items-center">
+                    <i class="fas fa-user text-gray-400 mr-2"></i> {{ user.username }} - <span class="ml-2 font-bold">{{ user.url_count }}</span> URLs
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No users found.</p>
+            {% endif %}
+        </div>
+        <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4 flex items-center">
+                <i class="fas fa-link mr-2 text-blue-500"></i> Top URLs by Clicks
+            </h3>
+            {% if top_urls %}
+            <ul>
+                {% for url in top_urls %}
+                <li class="mb-2 flex items-center">
+                    <i class="fas fa-link text-gray-400 mr-2"></i> {{ url.short_code }} - <span class="ml-2 font-bold">{{ url.click_count }}</span> clicks
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No URLs found.</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="bg-white shadow rounded-lg p-6 mb-8">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4 flex items-center">
+            <i class="fas fa-globe mr-2 text-green-500"></i> Top Countries by Clicks
+        </h3>
+        {% if top_countries %}
+        <ul>
+            {% for country in top_countries %}
+            <li class="mb-2 flex items-center">
+                <i class="fas fa-flag text-gray-400 mr-2"></i> {{ country.country|default:"Unknown" }} - <span class="ml-2 font-bold">{{ country.count }}</span> clicks
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No country data found.</p>
+        {% endif %}
+    </div>
+    <div class="bg-white shadow rounded-lg p-6 mb-8">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4 flex items-center">
+            <i class="fas fa-chart-bar mr-2 text-purple-500"></i> System Activity (Last 7 Days)
+        </h3>
+        <canvas id="systemActivityChart" height="120"></canvas>
+    </div>
+</div>
+<script>
+    // Example Chart.js usage for system activity
+    document.addEventListener('DOMContentLoaded', function() {
+        var ctx = document.getElementById('systemActivityChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ system_activity_labels|safe }},
+                datasets: [
+                    {
+                        label: 'URLs Created',
+                        backgroundColor: 'rgba(56,189,248,0.7)',
+                        borderColor: 'rgba(56,189,248,1)',
+                        data: {{ system_activity_urls|safe }},
+                    },
+                    {
+                        label: 'Clicks',
+                        backgroundColor: 'rgba(16,185,129,0.7)',
+                        borderColor: 'rgba(16,185,129,1)',
+                        data: {{ system_activity_clicks|safe }},
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' },
+                    title: { display: false }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
